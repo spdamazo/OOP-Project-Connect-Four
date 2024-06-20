@@ -9,7 +9,7 @@
         Name = name;
     }
 
-   
+
 }
 class HumanPlayer
 {
@@ -23,7 +23,7 @@ class ConnectFourGame
 
     static void Main(string[] args)
     {
-        
+
     }
 }
 class Board
@@ -55,4 +55,18 @@ class Board
         }
         return false;
     }
+
+    public void Display() 
+    {
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                Console.Write("| " + grid[row, col]);
+            }
+            Console.WriteLine("|");
+        }
+        Console.WriteLine(new string('-', Columns * 3));
+    }
+
 }
