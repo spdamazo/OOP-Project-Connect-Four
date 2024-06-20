@@ -1,7 +1,7 @@
 # OOP-Project-Connect-Four
 
 ES Team:
-Stephanie Maru
+Stephanie Maru,
 Erick Mulia Goycoolea
 
 Link:
