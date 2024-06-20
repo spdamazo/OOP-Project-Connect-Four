@@ -25,5 +25,19 @@ class ConnectFourGame
 }
 class Board
 {
+    private char[,] grid;
+    private const int Rows = 6;
+    private const int Columns = 7;
 
+    public Board()
+    {
+        grid = new char[Rows, Columns];
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                grid[row, col] = ' ';
+            }
+        }
+    }
 }
