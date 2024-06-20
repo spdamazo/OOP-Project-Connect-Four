@@ -17,7 +17,10 @@ class HumanPlayer
 }
 class ConnectFourGame
 {
-    
+    private Board board;
+    private Player[] player;
+    private int currentPlayerIndex;
+
     static void Main(string[] args)
     {
         
@@ -39,5 +42,17 @@ class Board
                 grid[row, col] = ' ';
             }
         }
+    }
+    public bool PlacePiece(int column, char symbol)
+    {
+        for (int row = Rows - 1; row >= 0; row--)
+        {
+            if (grid[row, column] == ' ')
+            {
+                grid[row, column] = symbol;
+                return true;
+            }
+        }
+        return false;
     }
 }
