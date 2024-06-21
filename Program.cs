@@ -55,6 +55,27 @@ class Board
         }
         return false;
     }
+    public bool CheckForWin(char symbol)
+    {
+        // Check horizontal, vertical and diagonal win conditions
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                if (grid[row, col] == symbol)
+                {
+                    if (CheckDirection(row, col, 1, 0, symbol) ||
+                        CheckDirection(row, col, 0, 1, symbol) ||
+                        CheckDirection(row, col, 1, 1, symbol) ||
+                        CheckDirection(row, col, 1, -1, symbol))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public void Display() 
     {
