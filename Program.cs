@@ -1,4 +1,6 @@
-﻿abstract class Player
+﻿using System.Xml.Linq;
+
+abstract class Player
 {
     public char Symbol { get; private set; }
     public string Name { get; private set; }
@@ -9,11 +11,35 @@
         Name = name;
     }
 
-
+    public abstract void TakeTurn(Board board); 
 }
-class HumanPlayer
+class HumanPlayer:Player
 {
+    public HumanPlayer(char symbol, string name) : base(symbol, name) { }
 
+    public override void TakeTurn(Board board) 
+    {
+        int column;
+        while (true)
+        {
+            Console.Write($"{Name} (Player {Symbol}), enter column (0-6): ");
+            if (int.TryParse(Console.ReadLine(), out column) && column >= 0 && column < 7)
+            {
+                if (board.PlacePiece(column, Symbol))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Column is full, try another one.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input, please enter a number between 0 and 6.");
+            }
+        }
+    }
 }
 class ConnectFourGame
 {
@@ -76,7 +102,7 @@ class Board
         }
         return false;
     }
-    public bool IsFull() //steph 3
+    public bool IsFull() 
     {
         for (int col = 0; col < Columns; col++)
         {
