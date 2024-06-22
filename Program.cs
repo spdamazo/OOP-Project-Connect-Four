@@ -102,6 +102,24 @@ class Board
         }
         return false;
     }
+    private bool CheckDirection(int startRow, int startCol, int rowDir, int colDir, char symbol)
+    {
+        int count = 0;
+        int row = startRow;
+        int col = startCol;
+        while (row >= 0 && row < Rows && col >= 0 && col < Columns && grid[row, col] == symbol)
+        {
+            count++;
+            if (count == 4)
+            {
+                return true;
+            }
+            row += rowDir;
+            col += colDir;
+        }
+        return false;
+    }
+
     public bool IsFull() 
     {
         for (int col = 0; col < Columns; col++)
