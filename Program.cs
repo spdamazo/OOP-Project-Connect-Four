@@ -76,8 +76,19 @@ class Board
         }
         return false;
     }
+    public bool IsFull() //steph 3
+    {
+        for (int col = 0; col < Columns; col++)
+        {
+            if (grid[0, col] == ' ')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    public void Display() 
+    public void Display()
     {
         for (int row = 0; row < Rows; row++)
         {
