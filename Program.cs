@@ -11,13 +11,13 @@ abstract class Player
         Name = name;
     }
 
-    public abstract void TakeTurn(Board board); 
+    public abstract void TakeTurn(Board board);
 }
-class HumanPlayer:Player
+class HumanPlayer : Player
 {
     public HumanPlayer(char symbol, string name) : base(symbol, name) { }
 
-    public override void TakeTurn(Board board) 
+    public override void TakeTurn(Board board)
     {
         int column;
         while (true)
@@ -44,8 +44,25 @@ class HumanPlayer:Player
 class ConnectFourGame
 {
     private Board board;
-    private Player[] player;
+    private Player[] players;
     private int currentPlayerIndex;
+
+    public ConnectFourGame()
+    {
+        board = new Board();
+        players = new Player[2];
+
+        for (int i = 0; i < 2; i++)
+        {
+            Console.Write($"Enter name for Player {i + 1} (Symbol {(i == 0 ? 'X' : 'O')}): ");
+            string name = Console.ReadLine();
+            players[i] = new HumanPlayer(i == 0 ? 'X' : 'O', name);
+        }
+
+        currentPlayerIndex = 0;
+
+
+    }
 
     static void Main(string[] args)
     {
@@ -120,7 +137,7 @@ class Board
         return false;
     }
 
-    public bool IsFull() 
+    public bool IsFull()
     {
         for (int col = 0; col < Columns; col++)
         {
