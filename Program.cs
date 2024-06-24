@@ -63,6 +63,33 @@ class ConnectFourGame
 
 
     }
+    public void Play()
+    {
+        bool isRunning = true;
+        while (isRunning)
+        {
+            Console.Clear();
+            board.Display();
+            players[currentPlayerIndex].TakeTurn(board);
+
+            if (board.CheckForWin(players[currentPlayerIndex].Symbol))
+            {
+                Console.Clear();
+                board.Display();
+                Console.WriteLine($"{players[currentPlayerIndex].Name} (Player {players[currentPlayerIndex].Symbol}) wins!");
+                isRunning = false;
+            }
+            else if (board.IsFull())
+            {
+                Console.Clear();
+                board.Display();
+                Console.WriteLine("It's a tie!");
+                isRunning = false;
+            }
+
+            currentPlayerIndex = (currentPlayerIndex + 1) % 2;
+        }
+    }
 
     static void Main(string[] args)
     {
