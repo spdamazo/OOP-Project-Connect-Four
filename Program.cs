@@ -93,7 +93,16 @@ class ConnectFourGame
 
     static void Main(string[] args)
     {
+        bool playAgain = true;
+        while (playAgain)
+        {
+            ConnectFourGame game = new ConnectFourGame();
+            game.Play();
 
+            Console.Write("Do you want to play again? (y/n): ");
+            string response = Console.ReadLine().ToLower();
+            playAgain = (response == "y");
+        }
     }
 }
 class Board
