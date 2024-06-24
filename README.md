@@ -5,4 +5,4 @@ Stephanie Maru,
 Erick Mulia Goycoolea
 
 Link:
-https://spdamazo.github.io/OOP-Project-Connect-Four/
+https://github.com/spdamazo/OOP-Project-Connect-Four
