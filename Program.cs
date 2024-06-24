@@ -13,6 +13,7 @@ abstract class Player
 
     public abstract void TakeTurn(Board board);
 }
+
 class HumanPlayer : Player
 {
     public HumanPlayer(char symbol, string name) : base(symbol, name) { }
@@ -41,28 +42,55 @@ class HumanPlayer : Player
         }
     }
 }
+class AIPlayer : Player
+{
+    public AIPlayer(char symbol) : base(symbol, "AI") { }
+
+    public override void TakeTurn(Board board)
+    {
+        Random random = new Random();
+        int column;
+        while (true)
+        {
+            column = random.Next(0, 7);
+            if (board.PlacePiece(column, Symbol))
+            {
+                Console.WriteLine($"AI (Player {Symbol}) places piece in column {column}.");
+                break;
+            }
+        }
+    }
+}
+
 class ConnectFourGame
 {
     private Board board;
     private Player[] players;
     private int currentPlayerIndex;
 
-    public ConnectFourGame()
+    public ConnectFourGame(bool singlePlayer)
     {
         board = new Board();
         players = new Player[2];
 
-        for (int i = 0; i < 2; i++)
+        Console.Write("Enter name for Player 1 (Symbol X): ");
+        string name1 = Console.ReadLine();
+        players[0] = new HumanPlayer('X', name1);
+
+        if (singlePlayer)
         {
-            Console.Write($"Enter name for Player {i + 1} (Symbol {(i == 0 ? 'X' : 'O')}): ");
-            string name = Console.ReadLine();
-            players[i] = new HumanPlayer(i == 0 ? 'X' : 'O', name);
+            players[1] = new AIPlayer('O');
+        }
+        else
+        {
+            Console.Write("Enter name for Player 2 (Symbol O): ");
+            string name2 = Console.ReadLine();
+            players[1] = new HumanPlayer('O', name2);
         }
 
         currentPlayerIndex = 0;
-
-
     }
+
     public void Play()
     {
         bool isRunning = true;
@@ -96,15 +124,48 @@ class ConnectFourGame
         bool playAgain = true;
         while (playAgain)
         {
-            ConnectFourGame game = new ConnectFourGame();
+            bool validInput = false;
+            bool singlePlayer = false;
+
+            while (!validInput)
+            {
+                Console.Write("Choose game mode: 1 for Single Player, 2 for Two Players: ");
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int mode))
+                {
+                    if (mode == 1)
+                    {
+                        singlePlayer = true;
+                        validInput = true;
+                    }
+                    else if (mode == 2)
+                    {
+                        singlePlayer = false;
+                        validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Please enter 1 for Single Player or 2 for Two Players.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                }
+            }
+
+            ConnectFourGame game = new ConnectFourGame(singlePlayer);
             game.Play();
 
-            Console.Write("Do you want to play again? (y/n): ");
-            string response = Console.ReadLine().ToLower();
-            playAgain = (response == "y");
+            Console.Write("Play Again? (y/n): ");
+            string answer = Console.ReadLine().ToLower();
+            playAgain = (answer == "y");
         }
     }
+
 }
+
 class Board
 {
     private char[,] grid;
@@ -122,6 +183,7 @@ class Board
             }
         }
     }
+
     public bool PlacePiece(int column, char symbol)
     {
         for (int row = Rows - 1; row >= 0; row--)
@@ -134,6 +196,7 @@ class Board
         }
         return false;
     }
+
     public bool CheckForWin(char symbol)
     {
         // Check horizontal, vertical and diagonal win conditions
@@ -155,6 +218,7 @@ class Board
         }
         return false;
     }
+
     private bool CheckDirection(int startRow, int startCol, int rowDir, int colDir, char symbol)
     {
         int count = 0;
@@ -197,5 +261,4 @@ class Board
         }
         Console.WriteLine(new string('-', Columns * 3));
     }
-
 }
