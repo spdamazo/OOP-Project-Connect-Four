@@ -124,47 +124,107 @@ class ConnectFourGame
         bool playAgain = true;
         while (playAgain)
         {
-            bool validInput = false;
-            bool singlePlayer = false;
-
-            while (!validInput)
+            try
             {
-                Console.Write("Choose game mode: 1 for Single Player, 2 for Two Players: ");
-                string input = Console.ReadLine();
+                bool validInput = false;
+                bool singlePlayer = false;
 
-                if (int.TryParse(input, out int mode))
+                while (!validInput)
                 {
-                    if (mode == 1)
+                    Console.Write("Choose game mode: 1 for Single Player, 2 for Two Players: ");
+                    string input = Console.ReadLine();
+
+                    if (input == null)
                     {
-                        singlePlayer = true;
-                        validInput = true;
+                        throw new ArgumentNullException("Input cannot be null.");
                     }
-                    else if (mode == 2)
+
+                    if (int.TryParse(input, out int mode))
                     {
-                        singlePlayer = false;
-                        validInput = true;
+                        if (mode == 1)
+                        {
+                            singlePlayer = true;
+                            validInput = true;
+                        }
+                        else if (mode == 2)
+                        {
+                            singlePlayer = false;
+                            validInput = true;
+                        }
+                        else
+                        {
+                            throw new FormatException("Invalid choice. Please enter 1 for Single Player or 2 for Two Players.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid choice. Please enter 1 for Single Player or 2 for Two Players.");
+                        throw new FormatException("Invalid input. Please enter a number.");
                     }
                 }
-                else
+
+                ConnectFourGame game = new ConnectFourGame(singlePlayer);
+                game.Play();
+
+                bool flag;
+                do
                 {
-                    Console.WriteLine("Invalid input. Please enter a number.");
-                }
+                    Console.Write("Play Again? (y/n): ");
+                    try
+                    {
+                        string answer = Console.ReadLine()?.ToLower();
+                        if (answer == null)
+                        {
+                            throw new ArgumentNullException("Input cannot be null.");
+                        }
+                        if (answer == "y")
+                        {
+                            playAgain = true;
+                            flag = false;
+                        }
+                        else if (answer == "n")
+                        {
+                            playAgain = false;
+                            flag = false;
+                        }
+                        else
+                        {
+                            throw new FormatException("Invalid input. Please enter 'y' or 'n'.");
+                        }
+                    }
+                    catch (FormatException ex)
+                    {
+                        Console.WriteLine($"Input error: {ex.Message}");
+                        flag = true;
+                    }
+                    catch (ArgumentNullException ex)
+                    {
+                        Console.WriteLine($"Input error: {ex.Message}");
+                        flag = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                        flag = true;
+                    }
+                } while (flag);
             }
-
-            ConnectFourGame game = new ConnectFourGame(singlePlayer);
-            game.Play();
-
-            Console.Write("Play Again? (y/n): ");
-            string answer = Console.ReadLine().ToLower();
-            playAgain = (answer == "y");
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Input error: {ex.Message}");
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"Input error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            }
         }
     }
-
 }
+
+
 
 class Board
 {
@@ -262,3 +322,4 @@ class Board
         Console.WriteLine(new string('-', Columns * 3));
     }
 }
+
